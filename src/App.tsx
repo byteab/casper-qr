@@ -1,6 +1,5 @@
 import { useState } from "react"
-import { Input } from "./components/Input"
-import logo from "./logo.svg"
+import { Input, Title } from "./components"
 // @ts-ignore
 import debounce from "debounce"
 import QRCode from "react-qr-code"
@@ -38,6 +37,7 @@ function App() {
   return (
     <div className="App">
       {/* <h1>{qrValue}</h1> */}
+      <Title>Casper QR Generator</Title>
       <div className="qrAndFormContainer">
         <div className="formContainer">
           <Input
@@ -54,7 +54,7 @@ function App() {
           <Input name="message" onChange={handleChange} placeholder="Message" />
         </div>
         <div className="qrContainer">
-          {receiver ? <QRCode value={qrValue} /> : null}
+          <QRCode value={qrValue} />
         </div>
       </div>
     </div>
