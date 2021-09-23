@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Input } from "./components/Input"
 import logo from "./logo.svg"
 // @ts-ignore
 import debounce from "debounce"
@@ -36,20 +37,26 @@ function App() {
 
   return (
     <div className="App">
-      {receiver ? <QRCode value={qrValue} /> : null}
-      <h1>{qrValue}</h1>
-      <input
-        name="receiver"
-        onChange={handleChange}
-        placeholder="Receiver address"
-      />
-      <input
-        name="amount"
-        type="number"
-        onChange={handleChange}
-        placeholder="Amount"
-      />
-      <input name="message" onChange={handleChange} placeholder="Message" />
+      {/* <h1>{qrValue}</h1> */}
+      <div className="qrAndFormContainer">
+        <div className="formContainer">
+          <Input
+            name="receiver"
+            onChange={handleChange}
+            placeholder="Receiver address"
+          />
+          <Input
+            name="amount"
+            type="number"
+            onChange={handleChange}
+            placeholder="Amount"
+          />
+          <Input name="message" onChange={handleChange} placeholder="Message" />
+        </div>
+        <div className="qrContainer">
+          {receiver ? <QRCode value={qrValue} /> : null}
+        </div>
+      </div>
     </div>
   )
 }
