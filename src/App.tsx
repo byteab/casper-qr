@@ -1,43 +1,55 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { useState } from "react"
+import logo from "./logo.svg"
+// @ts-ignore
+import debounce from "debounce"
+import QRCode from "react-qr-code"
+import "./App.css"
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [{ receiver, amount, message }, setState] = useState({
+    receiver: null as null | string,
+    amount: null as null | string,
+    message: null as null | string,
+  })
+
+  let qrValue = ""
+  if (receiver) {
+    qrValue = `casper=${receiver}`
+    if (amount || message) {
+      qrValue += "?"
+      if (amount && message) {
+        qrValue += `amount=${amount}`
+        qrValue += `&message=${message}`
+      } else if (amount) {
+        qrValue += `amount=${amount}`
+      } else {
+        qrValue += `message=${message}`
+      }
+    } else {
+      qrValue.replace("?", "")
+    }
+  }
+
+  const handleChange = debounce((e: any) => {
+    setState((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }, 100)
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+      {receiver ? <QRCode value={qrValue} /> : null}
+      <h1>{qrValue}</h1>
+      <input
+        name="receiver"
+        onChange={handleChange}
+        placeholder="Receiver address"
+      />
+      <input
+        name="amount"
+        type="number"
+        onChange={handleChange}
+        placeholder="Amount"
+      />
+      <input name="message" onChange={handleChange} placeholder="Message" />
     </div>
   )
 }
