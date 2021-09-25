@@ -1,0 +1,1 @@
+export const ethereumRegex = /^0x([A-Fa-f0-9]{64})$/

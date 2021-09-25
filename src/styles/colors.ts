@@ -1,0 +1,1 @@
+export const roseRed = "#FF4848"

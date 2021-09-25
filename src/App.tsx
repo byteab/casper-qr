@@ -1,62 +1,19 @@
-import { useState } from "react"
-import { Input, Title } from "./components"
-// @ts-ignore
-import debounce from "debounce"
-import QRCode from "react-qr-code"
-import "./App.css"
+import * as React from "react"
+import { QRGenerator } from "./QRGenerator"
 
 function App() {
-  const [{ receiver, amount, message }, setState] = useState({
-    receiver: null as null | string,
-    amount: null as null | string,
-    message: null as null | string,
-  })
-
-  let qrValue = ""
-  if (receiver) {
-    qrValue = `casper=${receiver}`
-    if (amount || message) {
-      qrValue += "?"
-      if (amount && message) {
-        qrValue += `amount=${amount}`
-        qrValue += `&message=${message}`
-      } else if (amount) {
-        qrValue += `amount=${amount}`
-      } else {
-        qrValue += `message=${message}`
-      }
-    } else {
-      qrValue.replace("?", "")
-    }
-  }
-
-  const handleChange = debounce((e: any) => {
-    setState((prev) => ({ ...prev, [e.target.name]: e.target.value }))
-  }, 100)
-
   return (
-    <div className="App">
-      {/* <h1>{qrValue}</h1> */}
-      <Title>Casper QR Generator</Title>
-      <div className="qrAndFormContainer">
-        <div className="formContainer">
-          <Input
-            name="receiver"
-            onChange={handleChange}
-            placeholder="Receiver address"
-          />
-          <Input
-            name="amount"
-            type="number"
-            onChange={handleChange}
-            placeholder="Amount"
-          />
-          <Input name="message" onChange={handleChange} placeholder="Message" />
-        </div>
-        <div className="qrContainer">
-          <QRCode value={qrValue} />
-        </div>
-      </div>
+    <div
+      style={{
+        backgroundColor: "rgba(0,0,0,0.008)",
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <QRGenerator />
     </div>
   )
 }
