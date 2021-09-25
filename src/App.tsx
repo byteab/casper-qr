@@ -1,5 +1,5 @@
 import * as React from "react"
-import { QRGenerator } from "./QRGenerator"
+import { QRGenerator } from "./components/QRGenerator"
 
 function App() {
   return (
