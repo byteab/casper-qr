@@ -55,7 +55,6 @@ const MetaImage = styled.img`
   width: 2rem;
   height: 2rem;
   object-fit: contain;
-  background-color: green;
   cursor: pointer;
 `
 
