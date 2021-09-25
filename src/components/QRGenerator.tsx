@@ -185,6 +185,7 @@ export const QRGenerator = () => {
 
     if (!ethereum) {
       toast("Make sure Metamask is installed!")
+      return
     }
     try {
       // already authorized accounts
