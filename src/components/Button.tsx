@@ -17,10 +17,10 @@ const _Button = styled.button`
   font-size: 1.5rem;
   font-family: inherit;
   padding: 1rem;
-  width: 85%;
+  width: 19rem;
+  margin-top: 2rem;
   border-radius: 0.3rem;
   cursor: pointer;
-  align-self: flex-end;
   transition: all 0.2s;
   :hover {
     -webkit-box-shadow: 1px 10px 20px -3px rgba(0, 0, 0, 0.13);

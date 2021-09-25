@@ -11,44 +11,50 @@ import { ethers } from "ethers"
 
 const Container = styled.div`
   background-color: #fff;
-  width: 60vw;
-  height: 87vh;
+  max-width: 55rem;
   border-radius: 10px;
-  -webkit-box-shadow: -1px 5px 50px -17px rgba(0, 0, 0, 0.08);
-  box-shadow: -1px 5px 50px -17px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   padding-left: 4rem;
   padding-right: 4rem;
+  overflow-y: auto;
+  margin: auto;
+  margin-top: 2rem;
 `
 const Top = styled.div`
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
 `
 const Bottom = styled.div`
   flex: 4;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
-  padding-bottom: 5rem;
 `
 
 const InputsContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  flex-grow: 1;
+  flex-basis: 25rem;
 `
 
 const QRContainer = styled.div`
   display: flex;
+  flex-grow: 1;
+  flex-basis: 20rem;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-end;
-  flex-grow: 1;
+  align-items: center;
+  padding: 2rem;
   padding-top: 2.5rem;
+  padding-left: 0;
+  padding-right: 0;
 `
 
 const MetaImage = styled.img`

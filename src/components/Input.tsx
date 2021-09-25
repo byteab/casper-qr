@@ -1,8 +1,15 @@
 import styled from "styled-components"
 import { roseRed } from "../styles/colors"
 
+
+const Container = styled.div`
+  /* width: 30rem; */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`
+
 const _Input = styled.input`
-  width: 30rem;
   height: 2rem;
   padding: 0.5rem;
   padding-left: 1rem;
@@ -23,8 +30,6 @@ const InputContainer = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
 `
 
 const Label = styled.div`
@@ -50,7 +55,6 @@ const InputTitle = styled.div`
   color: rgba(0, 0, 0, 0.6);
 `
 const ErrorText = styled.p`
-  position: absolute;
   color: red;
   margin-left: 0.5rem;
   margin-top: 0.30rem;
@@ -71,14 +75,14 @@ const Input: React.FC<Props> = ({
   ...props
 }) => {
   return (
-    <div>
+    <Container>
       {title ? <InputTitle>{title}</InputTitle> : null}
       <InputContainer>
         {label ? <Label className="inputLabel">{label}</Label> : null}
         <_Input {...props}>{children}</_Input>
       </InputContainer>
-      {errorText ? <ErrorText>{errorText}</ErrorText> : null}
-    </div>
+      {errorText ? <ErrorText>{errorText}</ErrorText> : <ErrorText style={{opacity: 0}}>"alskdf"</ErrorText>}
+    </Container>
   )
 }
 

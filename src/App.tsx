@@ -2,20 +2,7 @@ import * as React from "react"
 import { QRGenerator } from "./components/QRGenerator"
 
 function App() {
-  return (
-    <div
-      style={{
-        backgroundColor: "rgba(0,0,0,0.008)",
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <QRGenerator />
-    </div>
-  )
+  return <QRGenerator />
 }
 
 export default App
