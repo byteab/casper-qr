@@ -5,6 +5,7 @@ import "./reset.css"
 import "./colors.css"
 import "./index.css"
 import './styles/typography.css'
+import 'react-toastify/dist/ReactToastify.css';
 import App from "./App"
 
 ReactDOM.render(
