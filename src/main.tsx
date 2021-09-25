@@ -6,6 +6,7 @@ import "./colors.css"
 import "./index.css"
 import './styles/typography.css'
 import 'react-toastify/dist/ReactToastify.css';
+import './App.css'
 import App from "./App"
 
 ReactDOM.render(
@@ -13,7 +14,7 @@ ReactDOM.render(
     <App />
     <ToastContainer
       position="top-center"
-      autoClose={5000}
+      autoClose={3000}
       hideProgressBar={false}
       newestOnTop={false}
       closeOnClick

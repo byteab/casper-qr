@@ -1,0 +1,4 @@
+/* fix small font size in toast */
+.Toastify__toast-body  {
+    font-size: 1rem;
+}
