@@ -79,7 +79,7 @@ export const useSigner = () => {
           status: "not_installed",
         }))
       }
-    }, 500)
+    }, 2000)
     const listenerConnected = (msg: any) => {
       let isLocked = !msg.detail.isUnlocked
       setState((prev) => ({
