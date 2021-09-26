@@ -84,8 +84,6 @@ export const QRGenerator = () => {
   const [currentAccount, setCurrentAccount] = React.useState("")
   const { receiver, amount, message, transactionID } = state
 
-  console.log({ status })
-
   const [errors, setErrors] = React.useState<State>({})
 
   const qrState = !state.receiver

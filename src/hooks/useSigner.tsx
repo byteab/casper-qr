@@ -73,7 +73,6 @@ export const useSigner = () => {
           }))
         }
       } catch (err: any) {
-        console.log(err)
         setState((prev) => ({
           ...prev,
           status: "not_installed",
