@@ -4,10 +4,11 @@ import { toast } from "react-toastify"
 import styled from "styled-components"
 import { Input, Title } from "."
 import { Button } from "./Button"
-import metamaskURL from "../assets/metamask.png"
+import casperImage from "../assets/casperlogo.jpeg"
 import { useDebouncedEffect } from "../utils/useDebouncedEffect"
 import { countNumberOfDecimals } from "../utils/countNumberOfDecimals"
 import { ethers } from "ethers"
+import { useSigner } from "../hooks/useSigner"
 
 const Container = styled.div`
   background-color: #fff;
@@ -57,7 +58,7 @@ const QRContainer = styled.div`
   padding-right: 0;
 `
 
-const MetaImage = styled.img`
+const GenerateImage = styled.img`
   width: 2rem;
   height: 2rem;
   object-fit: contain;
@@ -76,6 +77,8 @@ type State = {
 
 export const QRGenerator = () => {
   const [state, setState] = React.useState<State>({})
+  const { activeKey, status } = useSigner()
+
   // address received from metamask
 
   const [currentAccount, setCurrentAccount] = React.useState("")
@@ -181,42 +184,33 @@ export const QRGenerator = () => {
   }
 
   const getAddress = async () => {
-    const { ethereum } = window
-
-    if (!ethereum) {
-      toast("Make sure Metamask is installed!")
+    if (status === "loading") return
+    if (status === "not_installed") {
+      toast(
+        "Please install CasperLabs Signer extension and make sure there is an active key"
+      )
       return
     }
-    try {
-      // already authorized accounts
-      let accounts = await ethereum.request({ method: "eth_accounts" })
-      if (accounts.length) {
-        // setCurrentAccount(accounts[0])
-        setState((prev) => ({ ...prev, receiver: accounts[0] }))
-        setErrors((prev) => {
-          let obj = { ...prev }
-          delete obj.receiver
-          return obj
-        })
-      } else {
-        let accounts = await ethereum.request({
-          method: "eth_requestAccounts",
-        })
-        if (accounts.length) {
-          setState((prev) => ({ ...prev, receiver: accounts[0] }))
-          setErrors((prev) => {
-            let obj = { ...prev }
-            delete obj.receiver
-            return obj
-          })
-          // setCurrentAccount(accounts[0])
-        } else {
-          toast("no account found!")
-        }
-      }
-    } catch (e: any) {
-      toast("something went wrong! ", e.message)
+    if (status === "locked") {
+      toast("CasperLabs signer is locked")
+      return
     }
+    if (status === "not_connected") {
+      toast("CasperLabs signer is not connected")
+      return
+    }
+    if (status === "not_connected_and_maybe_locked") {
+      toast("Make sure CasperLabs signer is Connected and not locked")
+      return
+    }
+    if (status === "connected" && activeKey) {
+      setState((prev) => ({ ...prev, receiver: activeKey }))
+      return
+    }
+    // if none of the above handle it
+    toast(
+      "Something is wrong! please make sure CasperLabs is installed, unlocked and connected"
+    )
   }
 
   const downloadQRCode = () => {
@@ -257,7 +251,7 @@ export const QRGenerator = () => {
         <InputsContainer>
           <Input
             errorText={errors.receiver}
-            label={<MetaImage onClick={getAddress} src={metamaskURL} />}
+            label={<GenerateImage onClick={getAddress} src={casperImage} />}
             title="Receiver Address *"
             value={state.receiver}
             onChange={handleChange}

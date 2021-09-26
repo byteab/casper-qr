@@ -7,6 +7,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "casper-js-sdk": "^2.5.2",
     "debounce": "^1.2.1",
     "ethers": "^5.4.7",
     "react": "^17.0.0",
