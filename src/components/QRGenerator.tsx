@@ -1,10 +1,11 @@
 import * as React from "react"
-import QRCode from "react-qr-code"
+import { QRCode } from "react-qrcode-logo"
 import { toast } from "react-toastify"
 import styled from "styled-components"
 import { Input, Title } from "."
 import { Button } from "./Button"
 import casperImage from "../assets/casperlogo.jpeg"
+import casperHighResImage from "../assets/logoqr.png"
 import { useDebouncedEffect } from "../utils/useDebouncedEffect"
 import { countNumberOfDecimals } from "../utils/countNumberOfDecimals"
 import { ethers } from "ethers"
@@ -75,8 +76,12 @@ type State = {
 // TODO
 // download qr code
 
+const newTransactionID = Math.ceil(new Date().valueOf() / 1000)
+
 export const QRGenerator = () => {
-  const [state, setState] = React.useState<State>({})
+  const [state, setState] = React.useState<State>({
+    transactionID: newTransactionID + "",
+  })
   const { activeKey, status } = useSigner()
 
   // address received from metamask
@@ -94,7 +99,7 @@ export const QRGenerator = () => {
     ? "error"
     : "valid"
 
-  const [qrValue, setQrValue] = React.useState("")
+  const [qrValue, setQrValue] = React.useState("this_is_an_invalid_casper_qr_code" + transactionID)
 
   useDebouncedEffect(
     () => {
@@ -214,32 +219,13 @@ export const QRGenerator = () => {
   }
 
   const downloadQRCode = () => {
-    const svg = document.getElementById("QRCode")
-    if (svg) {
-      const svgData = new XMLSerializer().serializeToString(svg)
-      const canvas = document.createElement("canvas")
-      const ctx = canvas.getContext("2d")
-      const img = new Image()
-      if (ctx) {
-        img.onload = () => {
-          canvas.width = img.width
-          canvas.height = img.height
-          ctx.drawImage(img, 0, 0)
-          const pngFile = canvas.toDataURL("image/png")
-          const downloadLink = document.createElement("a")
-          downloadLink.download = state.transactionID
-            ? state.transactionID + "-CasperQRCode"
-            : "CasperQRCode"
-          downloadLink.href = `${pngFile}`
-          downloadLink.click()
-        }
-        img.src = `data:image/svg+xml;base64,${btoa(svgData)}`
-      } else {
-        toast("Something went wrong!")
-      }
-    } else {
-      toast("Something went wrong!")
-    }
+    var link = document.createElement("a")
+    link.download = state.transactionID
+      ? state.transactionID + "-CasperQRCode.png"
+      : "CasperQRCode.png"
+    //@ts-ignore
+    link.href = document.getElementById("react-qrcode-logo")?.toDataURL()
+    link.click()
   }
 
   return (
@@ -287,8 +273,13 @@ export const QRGenerator = () => {
         </InputsContainer>
         <QRContainer>
           <QRCode
-            id={"QRCode"}
-            disabled={!receiver}
+            logoImage={casperHighResImage}
+            logoHeight={120}
+            logoWidth={120}
+            // disabled={!receiver}
+            qrStyle="dots"
+            logoOpacity={1}
+            eyeRadius={5}
             value={qrValue}
             size={300}
           />

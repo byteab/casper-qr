@@ -12,7 +12,7 @@
     "ethers": "^5.4.7",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
-    "react-qr-code": "^2.0.2",
+    "react-qrcode-logo": "^2.5.0",
     "react-toastify": "^8.0.2",
     "styled-components": "^5.3.1"
   },
