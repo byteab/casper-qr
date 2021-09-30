@@ -21,6 +21,7 @@
   border-radius: 3px;
   display: inline-block;
   position: relative;
+  color: "#fff"
 }
 
 .checkBox:checked {

@@ -8,7 +8,6 @@ import casperImage from "../assets/casperlogo.jpeg"
 import casperHighResImage from "../assets/logoqr.png"
 import { useDebouncedEffect } from "../utils/useDebouncedEffect"
 import { countNumberOfDecimals } from "../utils/countNumberOfDecimals"
-import { ethers } from "ethers"
 import { useSigner } from "../hooks/useSigner"
 import "../styles/QRGenerator.css"
 
@@ -76,6 +75,7 @@ type State = {
 
 const casperLiveBase = "https://cspr.live/transfer?"
 
+const patternAddress = /^[1234567890abcdefghijklmnopqrstuvwxyz]{68}$/
 const generatedTransferID = Math.ceil(new Date().valueOf() / 1000)
 
 export const QRGenerator = () => {
@@ -150,7 +150,7 @@ export const QRGenerator = () => {
     switch (name) {
       case "receiver": {
         // check regex
-        if (value && !ethers.utils.isAddress(value + "")) {
+        if (value && !patternAddress.test(value + "")) {
           setErrors((prev) => ({ ...prev, receiver: "invalid address" }))
           return false
         }
@@ -184,6 +184,8 @@ export const QRGenerator = () => {
   const handleChange = (e: any) => {
     let name = e.target.name as string
     let value = e.target.value
+    console.log(value)
+    console.log(typeof value)
     validate({ name, value })
     setState((prev) => {
       let result = {
@@ -219,6 +221,7 @@ export const QRGenerator = () => {
       return
     }
     if (status === "connected" && activeKey) {
+      validate({ name: "receiver", value: activeKey })
       setState((prev) => ({ ...prev, receiver: activeKey }))
       return
     }
@@ -263,7 +266,7 @@ export const QRGenerator = () => {
             errorText={errors.receiver}
             label={<GenerateImage onClick={getAddress} src={casperImage} />}
             title="Receiver Address *"
-            value={state.receiver}
+            value={state.receiver || ""}
             onChange={handleChange}
             name="receiver"
             placeholder="Enter receiver address in here"
@@ -271,7 +274,7 @@ export const QRGenerator = () => {
           <Input
             errorText={errors.amount}
             title="Casper Amount"
-            value={state.amount}
+            value={state.amount || ""}
             type="number"
             name="amount"
             label={"CSPR"}
@@ -281,7 +284,7 @@ export const QRGenerator = () => {
           <Input
             errorText={errors.message}
             name="message"
-            value={state.message}
+            value={state.message || ""}
             title="Message"
             onChange={handleChange}
             placeholder="Enter a message"
@@ -289,7 +292,7 @@ export const QRGenerator = () => {
           <Input
             errorText={errors.transfer_id}
             name="transfer_id"
-            value={state.transfer_id}
+            value={state.transfer_id || ""}
             title="Transaction ID"
             onChange={handleChange}
             placeholder="Enter a transaction ID"
