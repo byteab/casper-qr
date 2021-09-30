@@ -2,3 +2,31 @@
 .Toastify__toast-body  {
     font-size: 1rem;
 }
+
+/* disable text select, a great option for buttons */
+.disable-select {
+    user-select: none; /* supported by Chrome and Opera */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+/* don't allow printing */
+@media print {
+ 
+    html,
+    body {
+
+        /* Hide the whole page */
+        display: none;
+    }
+}
+
+input[type="checkbox"] {
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    -ms-appearance: none !important;
+    -o-appearance: none !important;
+    appearance: none !important;
+}

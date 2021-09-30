@@ -10,6 +10,7 @@ import { useDebouncedEffect } from "../utils/useDebouncedEffect"
 import { countNumberOfDecimals } from "../utils/countNumberOfDecimals"
 import { ethers } from "ethers"
 import { useSigner } from "../hooks/useSigner"
+import "../styles/QRGenerator.css"
 
 const Container = styled.div`
   background-color: #fff;
@@ -70,24 +71,21 @@ type State = {
   receiver?: string
   amount?: string
   message?: string
-  transactionID?: string
+  transfer_id?: string
 }
 
-// TODO
-// download qr code
+const casperLiveBase = "https://cspr.live/transfer?"
 
-const newTransactionID = Math.ceil(new Date().valueOf() / 1000)
+const generatedTransferID = Math.ceil(new Date().valueOf() / 1000)
 
 export const QRGenerator = () => {
   const [state, setState] = React.useState<State>({
-    transactionID: newTransactionID + "",
+    transfer_id: generatedTransferID + "",
   })
   const { activeKey, status } = useSigner()
 
-  // address received from metamask
-
-  const [currentAccount, setCurrentAccount] = React.useState("")
-  const { receiver, amount, message, transactionID } = state
+  const { receiver, amount, message, transfer_id } = state
+  const [isCasperLiveLink, setIsCasperLiveLink] = React.useState(true)
 
   const [errors, setErrors] = React.useState<State>({})
 
@@ -99,16 +97,28 @@ export const QRGenerator = () => {
     ? "error"
     : "valid"
 
-  const [qrValue, setQrValue] = React.useState("this_is_an_invalid_casper_qr_code" + transactionID)
+  const [qrValue, setQrValue] = React.useState(
+    "this_is_an_invalid_casper_qr_code" + transfer_id
+  )
 
   useDebouncedEffect(
     () => {
       let qrValue = ""
       if (state.receiver) {
-        qrValue = `casper:${receiver}`
-        if (amount || message || transactionID) {
-          qrValue += "?"
-          let obj = { amount, message, transactionID }
+        if (isCasperLiveLink) {
+          qrValue = casperLiveBase + `recipient=${receiver}`
+        } else {
+          qrValue = `casper:${receiver}`
+        }
+        if (amount || message || transfer_id) {
+          if (!isCasperLiveLink) {
+            qrValue += "?"
+          }
+          let obj = { amount, message, transfer_id }
+          // casper live doesn't accept message param
+          if (isCasperLiveLink) {
+            delete obj.message
+          }
           for (const key in obj) {
             if (Object.prototype.hasOwnProperty.call(obj, key)) {
               //@ts-ignore
@@ -126,7 +136,7 @@ export const QRGenerator = () => {
         setQrValue(qrValue)
       }
     },
-    [state],
+    [state, isCasperLiveLink],
     250
   )
 
@@ -220,12 +230,26 @@ export const QRGenerator = () => {
 
   const downloadQRCode = () => {
     var link = document.createElement("a")
-    link.download = state.transactionID
-      ? state.transactionID + "-CasperQRCode.png"
+    link.download = state.transfer_id
+      ? state.transfer_id + "-CasperQRCode.png"
       : "CasperQRCode.png"
     //@ts-ignore
     link.href = document.getElementById("react-qrcode-logo")?.toDataURL()
     link.click()
+  }
+
+  React.useEffect(() => {
+    let qrCode = document.getElementById("react-qrcode-logo")
+    if (qrCode) {
+      // disable right click on qrCode
+      qrCode.oncontextmenu = () => false
+    }
+  }, [])
+
+  const onCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const target = event.target
+    const value = target.checked
+    setIsCasperLiveLink(value)
   }
 
   return (
@@ -263,9 +287,9 @@ export const QRGenerator = () => {
             placeholder="Enter a message"
           />
           <Input
-            errorText={errors.transactionID}
-            name="transactionID"
-            value={state.transactionID}
+            errorText={errors.transfer_id}
+            name="transfer_id"
+            value={state.transfer_id}
             title="Transaction ID"
             onChange={handleChange}
             placeholder="Enter a transaction ID"
@@ -287,6 +311,18 @@ export const QRGenerator = () => {
             {qrState !== "valid" ? "Invalid QR" : "Download"}
           </Button>
         </QRContainer>
+        <div className="inputContainer">
+          <input
+            id="toCasperLive"
+            className="checkBox"
+            checked={isCasperLiveLink}
+            onChange={onCheckChange}
+            type="checkbox"
+          />
+          <label htmlFor="toCasperLive" className="checkBoxLabel">
+            Generate for casper.live
+          </label>
+        </div>
       </Bottom>
     </Container>
   )

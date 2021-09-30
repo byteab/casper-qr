@@ -33,7 +33,7 @@ const _Button = styled.button`
 export const Button: React.FC<Props> = ({ children, disabled, ...props }) => {
   return (
     //@ts-ignore
-    <_Button disabled={disabled} {...props}>
+    <_Button className="disable-select" disabled={disabled} {...props}>
       {children}
     </_Button>
   )
