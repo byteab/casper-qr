@@ -116,9 +116,9 @@ export const QRGenerator = () => {
           }
           let obj = { amount, message, transfer_id }
           // casper live doesn't accept message param
-          if (isCasperLiveLink) {
-            delete obj.message
-          }
+          // if (isCasperLiveLink) {
+          //   delete obj.message
+          // }
           for (const key in obj) {
             if (Object.prototype.hasOwnProperty.call(obj, key)) {
               //@ts-ignore
