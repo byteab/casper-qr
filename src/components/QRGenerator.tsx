@@ -7,6 +7,7 @@ import { Button } from "./Button"
 import casperImage from "../assets/casperlogo.jpeg"
 import casperHighResImage from "../assets/logoqr.png"
 import { useDebouncedEffect } from "../utils/useDebouncedEffect"
+import { CheckBox } from "./CheckBox"
 import { countNumberOfDecimals } from "../utils/countNumberOfDecimals"
 import { useSigner } from "../hooks/useSigner"
 import "../styles/QRGenerator.css"
@@ -249,9 +250,7 @@ export const QRGenerator = () => {
     }
   }, [])
 
-  const onCheckChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const target = event.target
-    const value = target.checked
+  const onCheckChange = (value: boolean) => {
     setIsCasperLiveLink(value)
   }
 
@@ -315,13 +314,7 @@ export const QRGenerator = () => {
           </Button>
         </QRContainer>
         <div className="inputContainer">
-          <input
-            id="toCasperLive"
-            className="checkBox"
-            checked={isCasperLiveLink}
-            onChange={onCheckChange}
-            type="checkbox"
-          />
+          <CheckBox onChange={onCheckChange} checked={isCasperLiveLink} />
           <label htmlFor="toCasperLive" className="checkBoxLabel">
             Generate for casper.live
           </label>

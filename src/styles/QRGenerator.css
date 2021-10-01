@@ -12,28 +12,5 @@
 
 .checkBoxLabel {
   font-size: 1.2rem;
-  margin-left: 0.7rem;
-}
-
-.checkBox {
-  background-color: #FF4848;
-  padding: 9px;
-  border-radius: 3px;
-  display: inline-block;
-  position: relative;
-  color: "#fff"
-}
-
-.checkBox:checked {
-	background-color: #FF4848;
-	color: #fff;
-}
-
-.checkBox:checked:after {
-	content: '\2714';
-	font-size: 14px;
-	position: absolute;
-	top: 0px;
-	left: 3px;
-	color: #fff;
+  margin-left: 1.2rem;
 }
