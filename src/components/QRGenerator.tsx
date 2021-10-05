@@ -316,7 +316,7 @@ export const QRGenerator = () => {
         <div className="inputContainer">
           <CheckBox onChange={onCheckChange} checked={isCasperLiveLink} />
           <label htmlFor="toCasperLive" className="checkBoxLabel">
-            Generate for casper.live
+            Generate for cspr.live
           </label>
         </div>
       </Bottom>
